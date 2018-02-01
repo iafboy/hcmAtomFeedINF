@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<wsdl:definitions
+    
+     targetNamespace="http://xmlns.oracle.com/bpmn/bpmnProcess/Mainwf"
+     xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+     xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+     xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:tns="http://xmlns.oracle.com/bpmn/bpmnProcess/Mainwf"
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    >
+    <wsdl:documentation>
+        <abstractWSDL>http://psworkshop:7001/soa-infra/services/default/pocwf!1.0/WSDLs/Mainwf.wsdl</abstractWSDL>
+    </wsdl:documentation>
+    <plnk:partnerLinkType name="MainwfPortTypePartnerLinkType">
+        <plnk:role name="MainwfPortTypeProvider">
+            <plnk:portType name="tns:MainwfPortType"/>
+        </plnk:role>
+    </plnk:partnerLinkType>
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://xmlns.oracle.com/bpmn/bpmnProcess/Mainwf">
+            <xsd:element name="start">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="i_projectCostId" type="xsd:string"/>
+                        <xsd:element name="i_purchaseOrderId" type="xsd:string"/>
+                        <xsd:element name="i_deliveryId" type="xsd:string"/>
+                        <xsd:element name="i_type" type="xsd:string"/>
+                        <xsd:element name="i_assertType" type="xsd:string"/>
+                        <xsd:element name="i_validationId" type="xsd:string"/>
+                        <xsd:element name="i_supplier" type="xsd:string"/>
+                        <xsd:element name="i_contactor" type="xsd:string"/>
+                        <xsd:element name="i_mobile" type="xsd:string"/>
+                        <xsd:element name="i_projectName" type="xsd:string"/>
+                        <xsd:element name="i_amounts" type="xsd:double"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="msgTrigger">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="projectCostId" type="xsd:string"/>
+                        <xsd:element name="status" type="xsd:boolean"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="endResponse">
+                <xsd:complexType>
+                    <xsd:sequence/>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="start">
+        <wsdl:part name="parameters" element="tns:start"/>
+    </wsdl:message>
+    <wsdl:message name="msgTrigger">
+        <wsdl:part name="parameters" element="tns:msgTrigger"/>
+    </wsdl:message>
+    <wsdl:message name="endResponse">
+        <wsdl:part name="parameters" element="tns:endResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="MainwfPortType">
+        <wsdl:operation name="start">
+            <wsdl:input message="tns:start"/>
+        </wsdl:operation>
+        <wsdl:operation name="msgTrigger">
+            <wsdl:input message="tns:msgTrigger"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="MainwfPortTypeCallBack">
+        <wsdl:operation name="end">
+            <wsdl:input message="tns:endResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="MainwfBinding" type="tns:MainwfPortType">
+        <wsdlsoap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="start">
+            <wsdlsoap:operation style="document" soapAction="start"/>
+            <wsdl:input>
+                <wsdlsoap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+        <wsdl:operation name="msgTrigger">
+            <wsdlsoap:operation style="document" soapAction="msgTrigger"/>
+            <wsdl:input>
+                <wsdlsoap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="Mainwf.service">
+        <wsdl:port name="MainwfPort" binding="tns:MainwfBinding">
+            <wsdlsoap:address location="http://localhost:7001/soa-infra/services/default/pocwf/Mainwf.service"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
