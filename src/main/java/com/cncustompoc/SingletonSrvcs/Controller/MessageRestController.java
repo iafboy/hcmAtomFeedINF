@@ -50,6 +50,8 @@ public class MessageRestController {
     public RestTemplate restTemplate(){
         return new RestTemplate();
     }
+    private static String triggertime=CommonParams.initTime;
+
     public RestTemplate restSSLTemplate()
             throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
         SSLContext ctx = SSLContext.getInstance("TLS");
@@ -113,8 +115,8 @@ public class MessageRestController {
     @Scheduled(cron = "${hw.schedule.trigger}")
     private void getAtomFeedUpdates(){
         String lasttime= CommonParams.initTime;
-        String url="https://ucf5-fap0377-fa-ext.oracledemos.com/hcmCoreApi/atomservlet/employee/empupdate?updated-min="+lasttime;
-        lasttime=ZonedDateTime.now().format( DateTimeFormatter.ISO_INSTANT );
+        String url="https://ucf5-fap0377-fa-ext.oracledemos.com/hcmCoreApi/atomservlet/employee/empupdate?updated-min="+triggertime;
+        triggertime=ZonedDateTime.now().format( DateTimeFormatter.ISO_INSTANT );
         String plainCreds = hcmuser+":"+hcmpwd;
         byte[] plainCredsBytes = plainCreds.getBytes();
         byte[] base64CredsBytes = Base64.encodeBase64(plainCredsBytes);
